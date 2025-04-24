@@ -53,18 +53,21 @@
 
                         <td class="border border-slate-300 p-1">{{ $post->user->name }}</td>
                         <td class="border border-slate-300 p-1">{{ $post->user->posts_count }}</td>
-                        <td class="border border-slate-300 p-1 flex flex-row gap-2  justify-center">
-                            <a href="{{ route('posts.edit', $post->id) }}"
-                                class="text-blue-800 hover:bg-blue-300 bg-blue-100 p-1 rounded-lg ">edit
-                                it</a>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="text-red-800 hover:bg-red-300 bg-red-100 p-1 rounded-lg">Delete</button>
-                            </form>
-                        </td>
+                        @if ($post->user_id === auth()->id())
+                            <td class="border border-slate-300 p-1 flex flex-row gap-2  justify-center">
+                                <a href="{{ route('posts.edit', $post->id) }}"
+                                    class="text-blue-800 hover:bg-blue-300 bg-blue-100 p-1 rounded-lg ">edit
+                                    it</a>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-800 hover:bg-red-300 bg-red-100 p-1 rounded-lg">Delete</button>
+                                </form>
+                            </td>
+                        @endif
+
                     </tr>
                 @endforeach
             </tbody>

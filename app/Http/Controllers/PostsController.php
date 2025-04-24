@@ -52,7 +52,11 @@ class PostsController extends Controller
         $validated['user_id'] = Auth::id();
 
         $post = Post::create($validated);
+
         event(new PostCreated($post));
+
+        // dd('PostCreated Event Dispatched');
+
         return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
@@ -114,11 +118,15 @@ class PostsController extends Controller
     public function destroy(string $id)
     {
         $post = Post::find($id);
-        $this->authorize('update', $post);
-        $post->delete();
-        if (Post::destroy($id)) {
-            event(new PostDeleted($post));
+
+        if (! $post) {
+            return redirect()->route('posts.index')->with('error', 'Post not found.');
         }
+
+        event(new PostDeleted($post));
+
+        $post->delete();
+
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
 }
