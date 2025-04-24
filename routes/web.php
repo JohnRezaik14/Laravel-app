@@ -22,7 +22,7 @@ Route::get('/posts/{id}/edit', [PostsController::class, 'edit'])->name('posts.ed
 Route::put('/posts', [PostsController::class, 'update'])->name('posts.update');
 
 // Remove the specified resource from storage.
-Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('posts.destory');
+Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');
 
 //! error 404 fallback route
 Route::fallback(function () {

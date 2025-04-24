@@ -15,7 +15,7 @@
 @endsection
 @section('form')
     {{-- action="{{ route('posts.update', ['post' => $id->$id]) }}" --}}
-    <form method="POST">
+    <form class="w-[50%] m-auto" action="{{ route('posts.update') }}" method="POST">
         @method('PUT')
         @include('layout.form')
     </form>

@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
@@ -13,11 +13,7 @@ class PostsController extends Controller
 
     public function index()
     {
-        //we want to show to the user posts data
-        //with the user created it and behind the scenes send the the user_id who created it
-        $posts = DB::table('posts')->
-            join('users', 'posts.user_id', '=', 'users.id')->select('posts.*', 'users.name as author_name')->get();
-        // return $posts;
+        $posts = Post::with('user:id,name')->paginate(5);
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -26,7 +22,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        $users = User::all()->setVisible(['name', 'id']);
+        $users = User::select('id', 'name')->get();
         return view('posts.create', ['users' => $users]);
     }
 
@@ -35,13 +31,14 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        // return "Store a newly created resource in storage.";
-        // $request->validate([
-        //     'title'   => 'required|min:5',
-        //     'body'    => 'min:10|string',
-        //     'enabled' => 'boolean',
-        //     'user_id' => 'exists:users,id',
-        // ]);
+        $validated = $request->validate([
+            'title'   => 'required|string|min:5|max:255',
+            'body'    => 'required|string|min:10',
+            'enabled' => 'required|boolean',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        Post::create($validated);
+        return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
     /**
@@ -50,13 +47,11 @@ class PostsController extends Controller
 
     public function show(string $id)
     {
-        $post = DB::table('posts')->where('posts.id', $id)->
-            join('users', 'posts.user_id', '=', 'users.id')->select('posts.*', 'users.name as author_name')->first();
-        if ((int) $id) {
-            return view('posts.show', ['id' => $id, 'post' => $post]);
-        } else {
+        $post = Post::with('user:id,name')->find($id);
+        if (! $post) {
             return view('NotFound');
         }
+        return view('posts.show', ['id' => $id, 'post' => $post]);
     }
 
     /**
@@ -64,19 +59,31 @@ class PostsController extends Controller
      */
     public function edit(string $id)
     {
-        if ((int) $id) {
-            return view('posts.edit', ['id' => $id]);
-        } else {
+
+        $post = Post::find($id);
+        if (! $post) {
             return view('NotFound');
         }
+        $users = User::select('id', 'name')->get();
+        return view('posts.edit', ['id' => $id, 'post' => $post, 'users' => $users]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, Post $post)
     {
-        // return "Update the specified resource in storage.";
+        $validated = $request->validate([
+            'title'   => 'required|string|min:5|max:255',
+            'body'    => 'required|string|min:10',
+            'enabled' => 'required|boolean',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $post->update($validated);
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
     }
 
     /**
@@ -84,6 +91,9 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-        // return ("Remove the specified resource from storage");
+        $post = Post::find($id);
+        $post->delete();
+        Post::destroy($id);
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
 }

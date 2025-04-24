@@ -11,22 +11,25 @@
                         </div>
                         <input type="text" name="title" id="title"
                             class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-                            placeholder="">
+                            placeholder="" value="{{ old('title', isset($post) ? $post->title : '') }}">
                     </div>
                 </div>
-                {{-- @error()
-                @enderror --}}
+                @error('title')
+                    <p class="text-red-800 text-sm">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="col-span-full">
                 <label for="about" class="block text-sm/6 font-medium text-gray-900">Post Body</label>
                 <div class="mt-2">
-                    <textarea name="about" id="about" rows="3"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
+                    <textarea id="about" rows="3"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        name="body">{{ old('body', isset($post) ? $post->body : '') }}</textarea>
                 </div>
                 <p class="mt-1 text-sm/6 text-gray-600">Write your post sentences.</p>
-                {{-- @error()
-                @enderror --}}
+                @error('body')
+                    <p class="text-red-800 text-sm">{{ $message }}</p>
+                @enderror
             </div>
             <div class="col-span-full">
                 <fieldset>
@@ -34,24 +37,30 @@
 
                     <div class="mt-3 space-y-2">
                         <div class="flex items-center gap-x-3">
-                            <input id="enabled" name="enabled" type="radio" checked
+                            <input id="enabled" name="enabled" type="radio" value="1"
+                                {{ old('enabled', isset($post) ? $post->enabled : '') == 1 ? 'checked' : '' }}
                                 class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden">
                             <label for="enabled" class="block text-sm/6 font-medium text-gray-900">enabled</label>
                         </div>
                         <div class="flex items-center gap-x-3">
-                            <input id="disabled" name="enabled" type="radio"
+                            <input id="disabled" name="enabled" type="radio" value="0"
                                 class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden">
                             <label for="disabled" class="block text-sm/6 font-medium text-gray-900">disabled</label>
                         </div>
+                        @error('enabled')
+                            <p class="text-red-800 text-sm">{{ $message }}</p>
+                        @enderror
                     </div>
                 </fieldset>
             </div>
             <div class="col-span-full">
+
                 <select name="user_id" id="userId"
                     class="px-3 py-2 border border-[#ccc] rounded-md bg-blue-100 text-[1rem] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ">
                     <option selected disabled>Select Author</option>
                     @foreach ($users as $user)
-                        <option class="rounded-md  cursor-pointer" value={{ $user->id }}>{{ $user->name }}
+                        <option {{ isset($post) && $user->id == $post->user_id ? 'selected' : '' }}
+                            class="rounded-md cursor-pointer" value="{{ $user->id }}">{{ $user->name }}
                         </option>
                     @endforeach
                 </select>
@@ -60,7 +69,6 @@
             @enderror --}}
         </div>
     </div>
-
 </div>
 
 <div class="mt-6 flex items-center justify-end gap-x-6">

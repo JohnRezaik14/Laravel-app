@@ -14,7 +14,7 @@
             <h2 class="text-xl">Post {{ $id }}</h2>
             <p><span class="post-desc-span">Title: </span> {{ $post->title }}</p>
             <p><span class="post-desc-span">Body: </span>{{ $post->body }}</p>
-            <p><span class="post-desc-span">Author Name: </span>{{ $post->author_name }}</p>
+            <p><span class="post-desc-span">Author Name: </span>{{ $post->user->name }}</p>
             <p><span class="post-desc-span">Created at: </span>{{ $post->created_at }}</p>
         </div>
         <P class="text-xl">Want to edit this post? <a href="{{ route('posts.edit', $id) }}"
