@@ -2,7 +2,8 @@
 <!-- Video Section -->
 ## 🎬 Watch Our Latest Video
 
-[![Watch the video](https://github.com/JohnRezaik14/Laravel-app/blob/main/public/image.png?raw=true)]([https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://drive.google.com/file/d/1svpjFu8M5-2HptIE9UG9PFBpparQnf9R/view?usp=sharing))
+[![Watch the video](https://github.com/JohnRezaik14/Laravel-app/blob/main/public/image.png?raw=true)](https://drive.google.com/file/d/1svpjFu8M5-2HptIE9UG9PFBpparQnf9R/view?usp=sharing)
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
