@@ -72,8 +72,14 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, string $id)
     {
+        $post = Post::find($id);
+
+        if (! $post) {
+            return redirect()->route('posts.index')->with('error', 'Post not found.');
+        }
+
         $validated = $request->validate([
             'title'   => 'required|string|min:5|max:255',
             'body'    => 'required|string|min:10',

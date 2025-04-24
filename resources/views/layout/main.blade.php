@@ -14,8 +14,8 @@
     @section('navbar')
         <nav
             class="nav-bar  w-full bg-gray-200 shadow shadow-blue-100 text-xl flex flex-row gap-8 justify-center items-center h-14 font-bold text-blue-900 mb-3">
-            <a class=" bg-gray-300 rounded-lg my-1 p-1  " href="{{ route('posts.index') }}">Home</a>
-            <a class=" bg-gray-300 rounded-lg my-1 p-1  " href="{{ route('posts.create') }}">New Post</a>
+            <a class=" bg-gray-300 rounded-lg my-1 p-1 hover:bg-blue-200  " href="{{ route('posts.index') }}">Home</a>
+            <a class=" bg-gray-300 rounded-lg my-1 p-1 hover:bg-blue-200  " href="{{ route('posts.create') }}">New Post</a>
 
         </nav>
     @show

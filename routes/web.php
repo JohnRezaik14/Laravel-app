@@ -19,7 +19,7 @@ Route::get('/posts/{id}', [PostsController::class, 'show'])->name('posts.show');
 Route::get('/posts/{id}/edit', [PostsController::class, 'edit'])->name('posts.edit');
 
 // Update the specified resource in storage.
-Route::put('/posts', [PostsController::class, 'update'])->name('posts.update');
+Route::put('/posts/{id}', [PostsController::class, 'update'])->name('posts.update');
 
 // Remove the specified resource from storage.
 Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');
