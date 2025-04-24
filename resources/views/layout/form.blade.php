@@ -2,15 +2,15 @@
 <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-4">
+            <div class="col-span-full">
                 <label for="title" class="block text-sm/6 font-medium text-gray-900">Post Title</label>
-                <div class="mt-2">
+                <div class="mt-2 ">
                     <div
-                        class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                        class="flex items-center  bg-white outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                         <div class="shrink-0 text-base text-gray-500 select-none sm:text-sm/6">
                         </div>
                         <input type="text" name="title" id="title"
-                            class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                            class=" block grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 rounded-lg"
                             placeholder="" value="{{ old('title', isset($post) ? $post->title : '') }}">
                     </div>
                 </div>
@@ -53,20 +53,7 @@
                     </div>
                 </fieldset>
             </div>
-            <div class="col-span-full">
 
-                <select name="user_id" id="userId"
-                    class="px-3 py-2 border border-[#ccc] rounded-md bg-blue-100 text-[1rem] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ">
-                    <option selected disabled>Select Author</option>
-                    @foreach ($users as $user)
-                        <option {{ isset($post) && $user->id == $post->user_id ? 'selected' : '' }}
-                            class="rounded-md cursor-pointer" value="{{ $user->id }}">{{ $user->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            {{-- @error()
-            @enderror --}}
         </div>
     </div>
 </div>

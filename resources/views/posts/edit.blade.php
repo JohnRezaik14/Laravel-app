@@ -14,9 +14,9 @@
     </div>
 @endsection
 @section('form')
-    {{-- action="{{ route('posts.update', ['post' => $id->$id]) }}" --}}
-    <form class="w-[50%] m-auto" action="{{ route('posts.update',$id) }}" method="POST">
+    <form class="w-[50%] m-auto" action="{{ route('posts.update', $post->id) }}" method="POST">
+        @csrf
         @method('PUT')
-        @include('layout.form')
+        @include('layout.form', ['post' => $post])
     </form>
 @endsection

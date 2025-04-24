@@ -32,6 +32,7 @@
                     <th class="border border-slate-300 p-2">Title</th>
                     <th class="border border-slate-300 p-2">Body</th>
                     <th class="border border-slate-300 p-2">Author name</th>
+                    <th class="border border-slate-300 p-2">Author Posts Count</th>
                     <th class="border border-slate-300 p-2">Actions</th>
                 </tr>
             </thead>
@@ -51,7 +52,7 @@
                         <td class="border border-slate-300 p-1">{{ Str::substr($post->body, 0, 45) . '....' }}</td>
 
                         <td class="border border-slate-300 p-1">{{ $post->user->name }}</td>
-
+                        <td class="border border-slate-300 p-1">{{ $post->user->posts_count }}</td>
                         <td class="border border-slate-300 p-1 flex flex-row gap-2  justify-center">
                             <a href="{{ route('posts.edit', $post->id) }}"
                                 class="text-blue-800 hover:bg-blue-300 bg-blue-100 p-1 rounded-lg ">edit

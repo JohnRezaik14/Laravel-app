@@ -1,20 +1,31 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\PostCreated;
+use App\Events\PostDeleted;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
 
     public function index()
     {
-        $posts = Post::with('user:id,name')->paginate(5);
+        // $users = \App\Models\User::all();
+        // foreach ($users as $user) {
+        //     $postCount = $user->posts()->count();
+        //     $user->update(['posts_count' => $postCount]);
+        // }
+        $posts = Post::with('user:id,name,posts_count')->paginate(5);
         return view('posts.index', ['posts' => $posts]);
+        // return $posts;
     }
 
     /**
@@ -22,6 +33,7 @@ class PostsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Post::class);
         $users = User::select('id', 'name')->get();
         return view('posts.create', ['users' => $users]);
     }
@@ -35,9 +47,12 @@ class PostsController extends Controller
             'title'   => 'required|string|min:5|max:255',
             'body'    => 'required|string|min:10',
             'enabled' => 'required|boolean',
-            'user_id' => 'required|exists:users,id',
         ]);
-        Post::create($validated);
+
+        $validated['user_id'] = Auth::id();
+
+        $post = Post::create($validated);
+        event(new PostCreated($post));
         return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
@@ -64,8 +79,8 @@ class PostsController extends Controller
         if (! $post) {
             return view('NotFound');
         }
-        $users = User::select('id', 'name')->get();
-        return view('posts.edit', ['id' => $id, 'post' => $post, 'users' => $users]);
+        $this->authorize('update', $post);
+        return view('posts.edit', ['id' => $id, 'post' => $post]);
 
     }
 
@@ -84,8 +99,9 @@ class PostsController extends Controller
             'title'   => 'required|string|min:5|max:255',
             'body'    => 'required|string|min:10',
             'enabled' => 'required|boolean',
-            'user_id' => 'required|exists:users,id',
         ]);
+
+        $validated['user_id'] = $post->user_id;
 
         $post->update($validated);
 
@@ -98,8 +114,11 @@ class PostsController extends Controller
     public function destroy(string $id)
     {
         $post = Post::find($id);
+        $this->authorize('update', $post);
         $post->delete();
-        Post::destroy($id);
+        if (Post::destroy($id)) {
+            event(new PostDeleted($post));
+        }
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
 }
