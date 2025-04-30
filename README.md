@@ -1,7 +1,8 @@
-
+#Laravel-Course-labs
 <!-- Video Section -->
 ## 🎬 Watch Our Latest Video
 
+[![Watch the video](https://github.com/user-attachments/assets/cb26bd65-41e7-495c-a25d-b050f4a7268b?raw=true)](https://drive.google.com/file/d/1aFvCeuL0wwAtnQlWbPNflUfjjzr_kI2n/view?usp=sharing)
 [![Watch the video](https://github.com/JohnRezaik14/Laravel-app/blob/main/public/image.png?raw=true)](https://drive.google.com/file/d/1svpjFu8M5-2HptIE9UG9PFBpparQnf9R/view?usp=sharing)
 
 
