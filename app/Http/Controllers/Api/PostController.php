@@ -1,3 +1,4 @@
+<?php
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -8,7 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::with('user')->get();
+        return Post::with('user')->latest()->get();
     }
 
     public function show(Post $post)
@@ -18,39 +19,40 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
+        $validated = $request->validate([
+            'title'   => 'required|string|max:255',
             'content' => 'required|string',
         ]);
 
-        $post = Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'user_id' => $request->user()->id,
-        ]);
+        $post = $request->user()->posts()->create($validated);
 
-        return response()->json($post, 201);
+        return response()->json([
+            'message' => 'Post created successfully',
+            'post'    => $post->load('user'),
+        ], 201);
     }
 
     public function update(Request $request, Post $post)
     {
-        $this->authorize('update', $post);
 
-        $request->validate([
-            'title' => 'sometimes|string|max:255',
+        $validated = $request->validate([
+            'title'   => 'sometimes|string|max:255',
             'content' => 'sometimes|string',
         ]);
 
-        $post->update($request->only(['title', 'content']));
+        $post->update($validated);
 
-        return response()->json($post);
+        return response()->json([
+            'message' => 'Post updated successfully',
+            'post'    => $post->load('user'),
+        ]);
     }
 
     public function destroy(Post $post)
     {
-        $this->authorize('delete', $post);
+
         $post->delete();
 
-        return response()->json(['message' => 'Post deleted']);
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 }
